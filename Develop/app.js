@@ -68,10 +68,10 @@ function promptUser() {
         // }
         if (answers.job_title === "Manager") {
             let manager = new Manager(
-                answers.name,
-                answers.ID,
-                answers.email,
-                answers.office_number
+                answers.name.trim(),
+                answers.ID.trim(),
+                answers.email.trim(),
+                answers.office_number.trim()
             )
             team.push(manager)
             teamMember = fs.readFileSync("templates/manager.html");
@@ -79,10 +79,10 @@ function promptUser() {
         }
         if (answers.job_title === "Engineer") {
             let engineer = new Engineer(
-                answers.name,
-                answers.ID,
-                answers.email,
-                answers.github
+                answers.name.trim(),
+                answers.ID.trim(),
+                answers.email.trim(),
+                answers.github.trim()
             )
             team.push(engineer)
             teamMember = fs.readFileSync("templates/engineer.html");
@@ -90,63 +90,45 @@ function promptUser() {
         }
         if (answers.job_title === "Intern") {
             let intern = new Intern(
-                answers.name,
-                answers.ID,
-                answers.email,
-                answers.school
+                answers.name.trim(),
+                answers.ID.trim(),
+                answers.email.trim(),
+                answers.school.trim()
             )
             team.push(intern)
             teamMember = fs.readFileSync("templates/intern.html");
             // fs.writeFileSync(outputPath, render(team), "utf-8");
         }
-        continueTeam ();
+        continueTeam();
     }).catch(error => {
-        if(error.isTtyError) {
-          console.log("Prompt couldn't be rendered in the current environment");
+        if (error.isTtyError) {
+            console.log("Prompt couldn't be rendered in the current environment");
         } else {
             console.log("Error")
         }
-})
+    })
 }
 
-function continueTeam () {
+function continueTeam() {
     return inquirer.prompt([
-        {        
+        {
             name: "confirm_prompt",
             type: "confirm",
             message: "Enter another team member?"
         }
     ]).then((data) => {
-        if(data.confirm_prompt === true) {
+        if (data.confirm_prompt === true) {
             console.log("Let's add new teammates")
             return promptUser();
         } else {
+            if (!fs.existsSync(OUTPUT_DIR)) {
+                fs.mkdirSync(OUTPUT_DIR)
+            }
             console.log("Printing html file to output folder")
             fs.writeFileSync(outputPath, render(team), "utf-8");
+
         }
     })
 }
 
-promptUser()
-
-//   
-
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+promptUser();
