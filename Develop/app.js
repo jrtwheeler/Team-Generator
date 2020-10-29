@@ -24,7 +24,6 @@ function promptUser() {
             type: "input",
             name: "name",
             message: "Enter employee name.",
-            // when: (answers) => answers.enter_employee === true
         },
         {
             type: "input",
@@ -54,11 +53,6 @@ function promptUser() {
             message: "Enter school.",
             when: (answers) => answers.job_title === "Intern"
         }
-        // {
-        //     name: "confirm_prompt",
-        //     type: "confirm",
-        //     message: "Enter another team member?"
-        // }
     ]).then((answers) => {
         if (answers.job_title === "Manager") {
             let manager = new Manager(
@@ -69,7 +63,7 @@ function promptUser() {
             )
             team.push(manager)
             teamMember = fs.readFileSync("templates/manager.html");
-            fs.writeFileSync(outputPath, render(team), "utf-8");
+            // fs.writeFileSync(outputPath, render(team), "utf-8");
         }
         if (answers.job_title === "Engineer") {
             let engineer = new Engineer(
@@ -80,7 +74,7 @@ function promptUser() {
             )
             team.push(engineer)
             teamMember = fs.readFileSync("templates/engineer.html");
-            fs.writeFileSync(outputPath, render(team), "utf-8");
+            // fs.writeFileSync(outputPath, render(team), "utf-8");
         }
         if (answers.job_title === "Intern") {
             let intern = new Intern(
@@ -91,11 +85,27 @@ function promptUser() {
             )
             team.push(intern)
             teamMember = fs.readFileSync("templates/intern.html");
+            // fs.writeFileSync(outputPath, render(team), "utf-8");
+        }
+        continueTeam ();
+    })
+}
+
+function continueTeam () {
+    return inquirer.prompt([
+        {        
+            name: "confirm_prompt",
+            type: "confirm",
+            message: "Enter another team member?"
+        }
+    ]).then((more_teammates) => {
+        if(more_teammates.confirm === true) {
+            promptUser();
+        } else {
             fs.writeFileSync(outputPath, render(team), "utf-8");
         }
     })
 }
-
 
 promptUser()
 
