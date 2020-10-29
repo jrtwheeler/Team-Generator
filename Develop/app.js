@@ -10,83 +10,140 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-// const writeFileAsync = util.promisify(fs.writeFile);
+const team = [];
 
-// // If you google github badges, you wil be able to insert the license choice into the URL. So if you have that list of licneses...
+// function promptUser() {
+//     return inquirer.prompt([
+//         {
+//             name: "enter_employee",
+//             type: "confirm",
+//             message: "Do you want to enter a team member?",
+//             default: true,
+//             when: (answers) => answers.confirm_prompt === false
+//         },
+//         {
+//             type: "input",
+//             name: "name",
+//             message: "Enter employee name.",
+//             when: (answers) => answers.enter_employee === true
+//         },
+//         {
+//             type: "list",
+//             message: "Choose job title",
+//             name: "job_title",
+//             choices: ["Manager", "Engineer", "Intern"],
+//         },
+//         {
+//             type: "input",
+//             name: "ID",
+//             message: "Enter employee ID.",
+//         },
+//         {
+//             type: "input",
+//             name: "email",
+//             message: "Enter employee email.",
+//         },
+//         {
+//             type: "input",
+//             name: "office_number",
+//             message: "Enter office number.",
+//             when: (answers) => answers.job_title === "Manager"
+//         },
+//         {
+//             type: "input",
+//             name: "github",
+//             message: "Enter github address.",
+//             when: (answers) => answers.job_title === "Engineer"
+//         },
+//         {
+//             type: "input",
+//             name: "school",
+//             message: "Enter school.",
+//             when: (answers) => answers.job_title === "Intern"
+//         },
+//         {
+//             name: "confirm_prompt",
+//             type: "confirm",
+//             message: "Enter another team member?"
+//         }
+//     ]);
+// }
+
 function promptUser() {
     return inquirer.prompt([
-        {
-            name: "enter_employee",
-            type: "confirm",
-            message: "Do you want to enter a team member?",
-            default: true,
-            when: (answers) => answers.confirm_prompt === false
-        },
-        {
-            type: "input",
-            name: "name",
-            message: "Enter employee name.",
-            when: (answers) => answers.enter_employee === true
-        },
         {
             type: "list",
             message: "Choose job title",
             name: "job_title",
             choices: ["Manager", "Engineer", "Intern"],
         },
+        // {
+        //     name: "enter_employee",
+        //     type: "confirm",
+        //     message: "Do you want to enter a team member?",
+        //     default: true,
+        //     when: (answers) => answers.confirm_prompt === false
+        // },
+        {
+            type: "input",
+            name: "name",
+            message: "Enter employee name.",
+            // when: (answers) => answers.enter_employee === true
+        },
         {
             type: "input",
             name: "ID",
-            message: "Enter employee ID.",
+            message: "Enter manager ID.",
         },
         {
             type: "input",
             name: "email",
-            message: "Enter employee email.",
+            message: "Enter manager email.",
         },
         {
             type: "input",
             name: "office_number",
             message: "Enter office number.",
             when: (answers) => answers.job_title === "Manager"
-        },
-        {
-            type: "input",
-            name: "github",
-            message: "Enter github address.",
-            when: (answers) => answers.job_title === "Engineer"
-        },
-        {
-            type: "input",
-            name: "school",
-            message: "Enter school.",
-            when: (answers) => answers.job_title === "Intern"
-        },
-        {
-            name: "confirm_prompt",
-            type: "confirm",
-            message: "Enter another team member?",
         }
-    ]);
-}
-
-let init = () => {
-    promptUser().then((answers) => {
-        if (answers.confirm_prompt === true) {
-            return promptUser();
-        } else {
-            console.log("Team entry complete. Priting html page ... ");
+        // when: (answers) => answers.job_title === "Manager"
+        // },
+        // {
+        //     type: "input",
+        //     name: "github",
+        //     message: "Enter github address.",
+        //     when: (answers) => answers.job_title === "Engineer"
+        // },
+        // {
+        //     type: "input",
+        //     name: "school",
+        //     message: "Enter school.",
+        //     when: (answers) => answers.job_title === "Intern"
+        // },
+        // {
+        //     name: "confirm_prompt",
+        //     type: "confirm",
+        //     message: "Enter another team member?"
+        // }
+    ]).then((answers) => {
+        if (answers.job_title === "Manager") {
+        let manager = new Manager(
+            answers.name,
+            answers.ID,
+            answers.email,
+            answers.office_number
+        )
+        team.push(manager)
+        teamMember = fs.readFileSync("templates/manager.html");
+        fs.writeFileSync(outputPath, render(team), "utf-8");
         }
-
-    }).catch((err) => {
-        console.log(err);
-    });
-}
+    })
 }
 
-init();
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
+
+promptUser()
+
+//   
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
