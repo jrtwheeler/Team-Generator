@@ -12,63 +12,6 @@ const render = require("./lib/htmlRenderer");
 
 const team = [];
 
-// function promptUser() {
-//     return inquirer.prompt([
-//         {
-//             name: "enter_employee",
-//             type: "confirm",
-//             message: "Do you want to enter a team member?",
-//             default: true,
-//             when: (answers) => answers.confirm_prompt === false
-//         },
-//         {
-//             type: "input",
-//             name: "name",
-//             message: "Enter employee name.",
-//             when: (answers) => answers.enter_employee === true
-//         },
-//         {
-//             type: "list",
-//             message: "Choose job title",
-//             name: "job_title",
-//             choices: ["Manager", "Engineer", "Intern"],
-//         },
-//         {
-//             type: "input",
-//             name: "ID",
-//             message: "Enter employee ID.",
-//         },
-//         {
-//             type: "input",
-//             name: "email",
-//             message: "Enter employee email.",
-//         },
-//         {
-//             type: "input",
-//             name: "office_number",
-//             message: "Enter office number.",
-//             when: (answers) => answers.job_title === "Manager"
-//         },
-//         {
-//             type: "input",
-//             name: "github",
-//             message: "Enter github address.",
-//             when: (answers) => answers.job_title === "Engineer"
-//         },
-//         {
-//             type: "input",
-//             name: "school",
-//             message: "Enter school.",
-//             when: (answers) => answers.job_title === "Intern"
-//         },
-//         {
-//             name: "confirm_prompt",
-//             type: "confirm",
-//             message: "Enter another team member?"
-//         }
-//     ]);
-// }
-
 function promptUser() {
     return inquirer.prompt([
         {
@@ -77,13 +20,6 @@ function promptUser() {
             name: "job_title",
             choices: ["Manager", "Engineer", "Intern"],
         },
-        // {
-        //     name: "enter_employee",
-        //     type: "confirm",
-        //     message: "Do you want to enter a team member?",
-        //     default: true,
-        //     when: (answers) => answers.confirm_prompt === false
-        // },
         {
             type: "input",
             name: "name",
