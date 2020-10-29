@@ -77,10 +77,7 @@ let init = () => {
     promptUser().then((answers) => {
         if (answers.enter_employee === false) {
             confirmPrompt();
-        }.then((answers) => {
-            if (answers.enter_employee === false) {
-                confirmPrompt();
-            }
+        }
     });
 }
 
