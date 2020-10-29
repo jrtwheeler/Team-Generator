@@ -11,54 +11,77 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 
 // const writeFileAsync = util.promisify(fs.writeFile);
-// // If you google github badges, you wil be able to insert the license choice into the URL. So if you have that list of licneses...
-// function promptUser() {
-//   return inquirer.prompt([
-//     {
-//       type: "input",
-//       name: "name",
-//       message: "Enter employee name.",
-//     },
-//     {
-//       type: "list",
-//       message: "Choose job title",
-//       name: "license",
-//       choices: ["Manager", "Engineer", "Intern"],
-//     },
-//     {
-//       type: "input",
-//       name: "ID",
-//       message: "Enter employee ID.",
-//     },
-//     {
-//       type: "input",
-//       name: "installation_instructions",
-//       message: "Enter installation instructions.",
-//     },
-//     {
-//       type: "input",
-//       name: "usage_information",
-//       message: "Enter usage information.",
-//     },
-//     {
-//       type: "input",
-//       name: "contributing_guidelines",
-//       message: "Enter contributing guidelines.",
-//     },
-//     {
-//       type: "input",
-//       name: "test_instructions",
-//       message: "Enter test instructions.",
-//     },
-//     {
-//       type: "input",
-//       name: "gitHub",
-//       message: "Enter GitHub username.",
-//     },
-//     
-//   ]);
-// }
 
+// // If you google github badges, you wil be able to insert the license choice into the URL. So if you have that list of licneses...
+function promptUser() {
+    return inquirer.prompt([
+        {
+            name: "enter_employee",
+            type: "confirm",
+            message: "Do you want to enter a team member?",
+        },
+        {
+            type: "input",
+            name: "name",
+            message: "Enter employee name.",
+            when: (answers) => answers.enter_employee === true
+        },
+        {
+            type: "list",
+            message: "Choose job title",
+            name: "job-title",
+            choices: ["Manager", "Engineer", "Intern"],
+        },
+        {
+            type: "input",
+            name: "ID",
+            message: "Enter employee ID.",
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "Enter employee email.",
+        },
+        {
+            type: "input",
+            name: "office-number",
+            message: "Enter office number.",
+            when: (answers) => answers.job - title === "Manager"
+        },
+        {
+            type: "input",
+            name: "github",
+            message: "Enter github address.",
+            when: (answers) => answers.job - title === "Engineer"
+        },
+        {
+            type: "input",
+            name: "school",
+            message: "Enter school.",
+            when: (answers) => answers.job - title === "Intern"
+        }
+    ]);
+}
+
+function confirmPrompt() {
+    return inquirer.prompt([
+        {
+            name: "confirm_prompt",
+            type: "confirm",
+            message: "Please confirm that you are finished entering employees",
+        },
+    ]);
+}
+
+let init = () => {
+    promptUser().then((answers) => {
+        if (answers.enter_employee === false) {
+            confirmPrompt();
+        }
+    });
+}
+
+init()
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
