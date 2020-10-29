@@ -88,7 +88,13 @@ function promptUser() {
             // fs.writeFileSync(outputPath, render(team), "utf-8");
         }
         continueTeam ();
-    })
+    }).catch(error => {
+        if(error.isTtyError) {
+          console.log("Prompt couldn't be rendered in the current environment");
+        } else {
+            console.log("Error")
+        }
+})
 }
 
 function continueTeam () {
@@ -98,10 +104,12 @@ function continueTeam () {
             type: "confirm",
             message: "Enter another team member?"
         }
-    ]).then((more_teammates) => {
-        if(more_teammates.confirm === true) {
+    ]).then((data) => {
+        if(data.confirm === true) {
+            console.log("Let's add new teammates")
             promptUser();
         } else {
+            console.log("Printing html file to output folder")
             fs.writeFileSync(outputPath, render(team), "utf-8");
         }
     })
