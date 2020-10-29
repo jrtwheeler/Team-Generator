@@ -19,6 +19,8 @@ function promptUser() {
             name: "enter_employee",
             type: "confirm",
             message: "Do you want to enter a team member?",
+            default: true,
+            when: (answers) => answers.confirm_prompt === false
         },
         {
             type: "input",
@@ -59,24 +61,22 @@ function promptUser() {
             name: "school",
             message: "Enter school.",
             when: (answers) => answers.job_title === "Intern"
-        }
-    ]);
-}
-
-function confirmPrompt() {
-    return inquirer.prompt([
+        },
         {
             name: "confirm_prompt",
             type: "confirm",
-            message: "Please confirm that you are finished entering employees",
-        },
+            message: "Enter another team member?",
+            default: false
+        }
     ]);
 }
 
 let init = () => {
     promptUser().then((answers) => {
-        if (answers.enter_employee === false) {
-            confirmPrompt();
+        while (answers.confirm_prompt === true) {
+            promptUser();
+        } else {
+            console.log("Team entry complete. Priting html page ... ");
         }
     });
 }
