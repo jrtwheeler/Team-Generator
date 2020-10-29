@@ -29,7 +29,7 @@ function promptUser() {
         {
             type: "list",
             message: "Choose job title",
-            name: "job-title",
+            name: "job_title",
             choices: ["Manager", "Engineer", "Intern"],
         },
         {
@@ -44,21 +44,21 @@ function promptUser() {
         },
         {
             type: "input",
-            name: "office-number",
+            name: "office_number",
             message: "Enter office number.",
-            when: (answers) => answers.job - title === "Manager"
+            when: (answers) => answers.job_title === "Manager"
         },
         {
             type: "input",
             name: "github",
             message: "Enter github address.",
-            when: (answers) => answers.job - title === "Engineer"
+            when: (answers) => answers.job_title === "Engineer"
         },
         {
             type: "input",
             name: "school",
             message: "Enter school.",
-            when: (answers) => answers.job - title === "Intern"
+            when: (answers) => answers.job_title === "Intern"
         }
     ]);
 }
@@ -77,7 +77,10 @@ let init = () => {
     promptUser().then((answers) => {
         if (answers.enter_employee === false) {
             confirmPrompt();
-        }
+        }.then((answers) => {
+            if (answers.enter_employee === false) {
+                confirmPrompt();
+            }
     });
 }
 
