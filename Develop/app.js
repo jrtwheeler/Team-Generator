@@ -66,19 +66,22 @@ function promptUser() {
             name: "confirm_prompt",
             type: "confirm",
             message: "Enter another team member?",
-            default: false
         }
     ]);
 }
 
 let init = () => {
     promptUser().then((answers) => {
-        while (answers.confirm_prompt === true) {
-            promptUser();
+        if (answers.confirm_prompt === true) {
+            return promptUser();
         } else {
             console.log("Team entry complete. Priting html page ... ");
         }
+
+    }).catch((err) => {
+        console.log(err);
     });
+}
 }
 
 init();
