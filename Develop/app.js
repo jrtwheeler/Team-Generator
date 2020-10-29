@@ -93,33 +93,31 @@ function promptUser() {
         {
             type: "input",
             name: "ID",
-            message: "Enter manager ID.",
+            message: "Enter employee ID.",
         },
         {
             type: "input",
             name: "email",
-            message: "Enter manager email.",
+            message: "Enter employee email.",
         },
         {
             type: "input",
             name: "office_number",
             message: "Enter office number.",
             when: (answers) => answers.job_title === "Manager"
+        },
+        {
+            type: "input",
+            name: "github",
+            message: "Enter github address.",
+            when: (answers) => answers.job_title === "Engineer"
+        },
+        {
+            type: "input",
+            name: "school",
+            message: "Enter school.",
+            when: (answers) => answers.job_title === "Intern"
         }
-        // when: (answers) => answers.job_title === "Manager"
-        // },
-        // {
-        //     type: "input",
-        //     name: "github",
-        //     message: "Enter github address.",
-        //     when: (answers) => answers.job_title === "Engineer"
-        // },
-        // {
-        //     type: "input",
-        //     name: "school",
-        //     message: "Enter school.",
-        //     when: (answers) => answers.job_title === "Intern"
-        // },
         // {
         //     name: "confirm_prompt",
         //     type: "confirm",
@@ -127,15 +125,37 @@ function promptUser() {
         // }
     ]).then((answers) => {
         if (answers.job_title === "Manager") {
-        let manager = new Manager(
-            answers.name,
-            answers.ID,
-            answers.email,
-            answers.office_number
-        )
-        team.push(manager)
-        teamMember = fs.readFileSync("templates/manager.html");
-        fs.writeFileSync(outputPath, render(team), "utf-8");
+            let manager = new Manager(
+                answers.name,
+                answers.ID,
+                answers.email,
+                answers.office_number
+            )
+            team.push(manager)
+            teamMember = fs.readFileSync("templates/manager.html");
+            fs.writeFileSync(outputPath, render(team), "utf-8");
+        }
+        if (answers.job_title === "Engineer") {
+            let engineer = new Engineer(
+                answers.name,
+                answers.ID,
+                answers.email,
+                answers.github
+            )
+            team.push(engineer)
+            teamMember = fs.readFileSync("templates/engineer.html");
+            fs.writeFileSync(outputPath, render(team), "utf-8");
+        }
+        if (answers.job_title === "Intern") {
+            let intern = new Intern(
+                answers.name,
+                answers.ID,
+                answers.email,
+                answers.school
+            )
+            team.push(intern)
+            teamMember = fs.readFileSync("templates/intern.html");
+            fs.writeFileSync(outputPath, render(team), "utf-8");
         }
     })
 }
