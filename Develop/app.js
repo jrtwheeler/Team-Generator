@@ -54,6 +54,18 @@ function promptUser() {
             when: (answers) => answers.job_title === "Intern"
         }
     ]).then((answers) => {
+        // switch(answers.job_title){
+        //     case answers.job_title === "Manager":
+        //         let manager = new Manager(
+        //             answers.name,
+        //             answers.ID,
+        //             answers.email,
+        //             answers.office_number
+        //         );
+        //         team.push(manager);
+        //         teamMember = fs.readFileSync("templates/manager.html");
+        //         break;
+        // }
         if (answers.job_title === "Manager") {
             let manager = new Manager(
                 answers.name,
@@ -105,9 +117,9 @@ function continueTeam () {
             message: "Enter another team member?"
         }
     ]).then((data) => {
-        if(data.confirm === true) {
+        if(data.confirm_prompt === true) {
             console.log("Let's add new teammates")
-            promptUser();
+            return promptUser();
         } else {
             console.log("Printing html file to output folder")
             fs.writeFileSync(outputPath, render(team), "utf-8");
