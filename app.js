@@ -16,7 +16,7 @@ const render = require("./lib/htmlRenderer");
 
 const team = [];
 
-function promptUser() {
+let init = () => {
     return inquirer.prompt([
         {
             type: "list",
@@ -32,7 +32,7 @@ function promptUser() {
         {
             type: "input",
             name: "ID",
-            message: "Enter employee ID.",
+            message: "Enter employee ID."
         },
         {
             type: "input",
@@ -100,7 +100,7 @@ function promptUser() {
     })
 }
 
-function continueTeam() {
+let continueTeam = () => {
     return inquirer.prompt([
         {
             name: "confirm_prompt",
@@ -110,7 +110,7 @@ function continueTeam() {
     ]).then((data) => {
         if (data.confirm_prompt === true) {
             console.log("Let's add new teammates")
-            return promptUser();
+            return init();
         } else {
             if (!fs.existsSync(OUTPUT_DIR)) {
                 fs.mkdirSync(OUTPUT_DIR)
@@ -133,4 +133,4 @@ const validateEmail = (email) => {
     }
 }
 
-promptUser();
+init();
