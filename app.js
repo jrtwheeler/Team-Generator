@@ -1,6 +1,8 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const questionPrompts = require("./lib/Question_Prompts");
+const continueTeam = require("./lib/Continue_Team")
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
@@ -17,49 +19,7 @@ const render = require("./lib/htmlRenderer");
 const team = [];
 
 let init = () => {
-    return inquirer.prompt([
-        {
-            type: "list",
-            message: "Choose job title",
-            name: "job_title",
-            choices: ["Manager", "Engineer", "Intern"],
-        },
-        {
-            type: "input",
-            name: "name",
-            message: "Enter employee name.",
-        },
-        {
-            type: "input",
-            name: "ID",
-            message: "Enter employee ID."
-        },
-        {
-            type: "input",
-            name: "email",
-            message: "Enter employee email.",
-            default: () => { },
-            validate: validateEmail
-        },
-        {
-            type: "input",
-            name: "office_number",
-            message: "Enter office number.",
-            when: (answers) => answers.job_title === "Manager"
-        },
-        {
-            type: "input",
-            name: "github",
-            message: "Enter github address.",
-            when: (answers) => answers.job_title === "Engineer"
-        },
-        {
-            type: "input",
-            name: "school",
-            message: "Enter school.",
-            when: (answers) => answers.job_title === "Intern"
-        }
-    ]).then((answers) => {
+    questionPrompts().then((answers) => {
         if (answers.job_title === "Manager") {
             let manager = new Manager(
                 answers.name.trim(),
@@ -90,7 +50,19 @@ let init = () => {
             team.push(intern)
             teamMember = fs.readFileSync("templates/intern.html");
         }
-        continueTeam();
+        continueTeam().then((data) => {
+            if (data.confirm_prompt === true) {
+                console.log("Let's add new teammates")
+                return init();
+            } else {
+                if (!fs.existsSync(OUTPUT_DIR)) {
+                    fs.mkdirSync(OUTPUT_DIR)
+                }
+                console.log("Printing html file to output folder")
+                fs.writeFileSync(outputPath, render(team), "utf-8");
+
+            }
+        })
     }).catch(error => {
         if (error.isTtyError) {
             console.log("Prompt couldn't be rendered in the current environment");
@@ -98,39 +70,6 @@ let init = () => {
             console.log("Error")
         }
     })
-}
-
-let continueTeam = () => {
-    return inquirer.prompt([
-        {
-            name: "confirm_prompt",
-            type: "confirm",
-            message: "Enter another team member?"
-        }
-    ]).then((data) => {
-        if (data.confirm_prompt === true) {
-            console.log("Let's add new teammates")
-            return init();
-        } else {
-            if (!fs.existsSync(OUTPUT_DIR)) {
-                fs.mkdirSync(OUTPUT_DIR)
-            }
-            console.log("Printing html file to output folder")
-            fs.writeFileSync(outputPath, render(team), "utf-8");
-
-        }
-    })
-}
-
-const validateEmail = (email) => {
-    valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
-    if (valid) {
-        console.log(" - Email validated");
-        return true;
-    } else {
-        console.log(".  Please enter a valid email")
-        return false;
-    }
 }
 
 init();
