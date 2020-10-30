@@ -58,18 +58,6 @@ function promptUser() {
             when: (answers) => answers.job_title === "Intern"
         }
     ]).then((answers) => {
-        // switch(answers.job_title){
-        //     case answers.job_title === "Manager":
-        //         let manager = new Manager(
-        //             answers.name,
-        //             answers.ID,
-        //             answers.email,
-        //             answers.office_number
-        //         );
-        //         team.push(manager);
-        //         teamMember = fs.readFileSync("templates/manager.html");
-        //         break;
-        // }
         if (answers.job_title === "Manager") {
             let manager = new Manager(
                 answers.name.trim(),
@@ -79,7 +67,6 @@ function promptUser() {
             )
             team.push(manager)
             teamMember = fs.readFileSync("templates/manager.html");
-            // fs.writeFileSync(outputPath, render(team), "utf-8");
         }
         if (answers.job_title === "Engineer") {
             let engineer = new Engineer(
@@ -90,7 +77,6 @@ function promptUser() {
             )
             team.push(engineer)
             teamMember = fs.readFileSync("templates/engineer.html");
-            // fs.writeFileSync(outputPath, render(team), "utf-8");
         }
         if (answers.job_title === "Intern") {
             let intern = new Intern(
@@ -101,7 +87,6 @@ function promptUser() {
             )
             team.push(intern)
             teamMember = fs.readFileSync("templates/intern.html");
-            // fs.writeFileSync(outputPath, render(team), "utf-8");
         }
         continueTeam();
     }).catch(error => {
