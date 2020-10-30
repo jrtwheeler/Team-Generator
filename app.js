@@ -7,6 +7,7 @@ const fs = require("fs");
 const logo = require('asciiart-logo');
 const config = require('./package.json');
 console.log(logo(config).render());
+console.log("Enter team members.")
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
